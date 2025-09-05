@@ -15,7 +15,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     user = svc.authenticate(form_data.username, form_data.password)
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
-    access = create_access_token({"sub": str(user.id), "role": user.role.value, "userName":user.useranme})
+    access = create_access_token({"sub": str(user.id), "role": user.role.value, "userName":user.username})
     refresh = create_refresh_token({"sub": str(user.id), "role": user.role.value, "userName":user.username})
     svc.save_refresh_token(user.id, refresh)
     return {"access_token": access, "refresh_token": refresh, "token_type": "bearer"}
